@@ -1,5 +1,6 @@
 package hello.core.beanfind;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.ReteDiscountPolicy;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,6 +44,16 @@ public  class ApplicationContextExtendsFindTest {
          assertThat(bean).isInstanceOf(ReteDiscountPolicy.class);
 
     }
+    @Test
+    @DisplayName("부모 타입 모두 조회하기")
+    void findAllBeanByParentType() {
+        Map<String , DiscountPolicy> beansOfType = ac.getBeansOfType(DiscountPolicy.class);
+        assertThat(beansOfType.size()).isEqualTo(2);
+        for (String key : beansOfType.keySet()) {
+            System.out.println("key = " + key + "value =" + beansOfType.get(key));
+        }
+    }
+
 
     @Configuration
     static class TestConfig{
