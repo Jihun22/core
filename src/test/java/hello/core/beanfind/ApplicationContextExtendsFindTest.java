@@ -34,6 +34,13 @@ public  class ApplicationContextExtendsFindTest {
        assertThat(rateDiscountPolicy).isInstanceOf(ReteDiscountPolicy.class);
     }
 
+    @Test
+    @DisplayName("특정 하위 타입으로 조회")
+    void findBeanBysubType() {
+         ReteDiscountPolicy bean  = ac.getBean(ReteDiscountPolicy.class);
+         assertThat(bean).isInstanceOf(ReteDiscountPolicy.class);
+
+    }
 
     @Configuration
     static class TestConfig{
