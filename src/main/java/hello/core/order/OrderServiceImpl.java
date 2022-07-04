@@ -6,10 +6,12 @@ import hello.core.discount.ReteDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class OrderServiceImpl implements  OrderService{
 
     private  final MemberRepository memberRepository;
@@ -18,12 +20,12 @@ public class OrderServiceImpl implements  OrderService{
 //    private  final DiscountPolicy discountPolicy = new FixDiscountPolicy();
 //    private  final DiscountPolicy discountPolicy = new ReteDiscountPolicy();
 
-    @Autowired
+  /* 룸복이 생성자 만들어줌(@RequiredArgsConstructor)사용해서  @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
-
+*/
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);
