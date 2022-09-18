@@ -8,14 +8,15 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class OrderServiceImpl implements  OrderService{
 
-    private  final MemberRepository memberRepository;
-    private  final DiscountPolicy discountPolicy; //인터페이스에만 의존하도록 코드 변경
+public class OrderServiceImpl implements  OrderService {
+
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy; //인터페이스에만 의존하도록 코드 변경
 
 //    private  final DiscountPolicy discountPolicy = new FixDiscountPolicy();
 //    private  final DiscountPolicy discountPolicy = new ReteDiscountPolicy();
@@ -26,6 +27,11 @@ public class OrderServiceImpl implements  OrderService{
         this.discountPolicy = discountPolicy;
     }
 */
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository,@Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+}
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);
