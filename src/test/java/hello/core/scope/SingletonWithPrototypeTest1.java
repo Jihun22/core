@@ -1,12 +1,14 @@
 package hello.core.scope;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,19 +36,20 @@ public class SingletonWithPrototypeTest1 {
 
        Clientbean clientbean2 =ac.getBean(Clientbean.class);
       int count2 =  clientbean2.logic();
-      assertThat(count2).isEqualTo(2);
+      assertThat(count2).isEqualTo(1);
 
     }
 
     @Scope("singleton")
     static  class  Clientbean{
-        private final PrototypeBean prototypeBean; //생성시점에 주입
+
 
         @Autowired
-        public Clientbean(PrototypeBean prototypeBean){
-            this.prototypeBean = prototypeBean;
-        }
+        private Provider<PrototypeBean> prototypeBeanProvider;
+
+
         public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
